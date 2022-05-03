@@ -40,36 +40,38 @@ void ReadFile(vector<string> &InLines, const string &path) {
 // Can be improved with templates. Directly call Object.ToString() and append it to file.
 void WriteFile(const vector<string> &OutLines, const string &path) {
     // auto status = ios::in | ios::out | ios::app;
-    fstream ReadFile;
-    ReadFile.open(path, fstream::out);
+    fstream WriteFile;
+    WriteFile.open(path, fstream::out);
 
-    if(ReadFile.fail()) {
+    if(WriteFile.fail()) {
         cout << "\nWriting file in WriteFile() function FAILED.";
         return;
     }
 
     for(int i = 0; i < (int) OutLines.size(); i++)
-        ReadFile << OutLines[i] << '\n';
+        WriteFile << OutLines[i] << '\n';
 
-    ReadFile.close();
+    WriteFile.close();
     return;
 }
 
 
-void AppendFile(const string &OutLine, const string &path) {
-    // auto status = ios::in | ios::out | ios::app;
-    fstream ReadFile;
-    ReadFile.open(path, fstream::app);
+// I'm not sure if this is useful, I obviously used it before
+// so it is added, but I think it's pretty useless generally.
+// void AppendFile(const string &OutLine, const string &path) {
+//     // auto status = ios::in | ios::out | ios::app;
+//     fstream ReadFile;
+//     ReadFile.open(path, fstream::app);
 
-    if(ReadFile.fail()) {
-        cout << "\nWriting file in WriteFile() function FAILED.";
-        return;
-    }
+//     if(ReadFile.fail()) {
+//         cout << "\nWriting file in WriteFile() function FAILED.";
+//         return;
+//     }
 
-    ReadFile << OutLine << '\n';
-    ReadFile.close();
-    return;
-}
+//     ReadFile << OutLine << '\n';
+//     ReadFile.close();
+//     return;
+// }
 
 
 // First time using sentinel (insert datatype) ever!        Delimiter is a character!!
@@ -121,17 +123,30 @@ int StringToInt(const string &fake_int) {
     return num;
 }
 
-// Doesn't deal with leading zeros.
+
 string IntToString(int fake_string) {
     string true_string = "";
 
-    if(fake_string == 0)
+    if(fake_string == 0) {
         true_string = "0";
+        return true_string;
+    }
+    
+    bool isNegative = false;
+    if(fake_string < 0) {
+        fake_string = -fake_string;
+        isNegative = true;
+    }
+        
 
     while(fake_string) {
         true_string = char((fake_string % 10) + '0') + true_string;
         fake_string /= 10;
     }
+
+    if(isNegative)
+        true_string = "-" + true_string;
+
     return true_string;
 }
 
@@ -142,13 +157,16 @@ void PrintLineHashed(const string &line) {
 }
 
 
+// Deprecated for now until I add template support or something,
+// It is pretty much uselss for testing if it doesn't support different datatypes.
+
 // Used in testing 🤷🏻‍♂️
-void PrintDecorated(const string &line) {
-    cout << "\n\n!!##### " << line << " ####!!\n\n";
-}
+// void PrintDecorated(const string &line) {
+//     cout << "\n\n!!##### " << line << " ####!!\n\n";
+// }
 
 
-void PrintMenu(const vector<string> &lines, const string& menu_name = "Menu Optiuons") {
+void PrintMenu(const vector<string> &lines, const string& menu_name = "Menu Options") {
     PrintLineHashed(menu_name);
     for(int i = 1 ; i <= (int) lines.size(); i++)
         cout << i << ": " << lines[i - 1] << '\n';
