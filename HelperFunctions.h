@@ -25,16 +25,16 @@ void ReadFile(vector<string> &InLines, const string &path) {
 
 // Slightly in efficient, could have splitted string while reading file,
 // but I didn't want to DRY.
-void ReadFileSplit(vector<vector<string>> &OutLines, const string &path) {
-    vector<string> in_lines;
-    ReadFile(in_lines, path);
+// void ReadFileSplit(vector<vector<string>> &OutLines, const string &path) {
+//     vector<string> in_lines;
+//     ReadFile(in_lines, path);
 
-    // Hmm...
-    OutLines.resize(in_lines.size());
+//     // Hmm...
+//     OutLines.resize(in_lines.size());
 
-    for(int idx = 0; idx < (int) in_lines.size(); idx++)
-        SplitString(OutLines[idx], in_lines[idx]);
-}
+//     for(int idx = 0; idx < (int) in_lines.size(); idx++)
+//         SplitString(OutLines[idx], in_lines[idx]);
+// }
 
 
 // Can be improved with templates. Directly call Object.ToString() and append it to file.
@@ -96,15 +96,30 @@ void SplitString(vector<string> &InLine, const string &str, const char &delimite
 }
 
 
+// int StringToInt(const string &fake_int) {
+//     int num = 0;
+
+//     for(int i = 0; i < (int) fake_int.size(); i++)
+//         num = (num * 10) + (fake_int[i] - '0');
+
+//     return num;
+// }
+
 int StringToInt(const string &fake_int) {
     int num = 0;
 
-    for(int i = 0; i < (int) fake_int.size(); i++)
+    int i = 0;
+    if(fake_int[0] == '-')
+        ++i;    
+
+    for(; i < (int) fake_int.size(); ++i)
         num = (num * 10) + (fake_int[i] - '0');
+
+    if(fake_int[0] == '-')
+        num = -num;
 
     return num;
 }
-
 
 // Doesn't deal with leading zeros.
 string IntToString(int fake_string) {
